@@ -75,7 +75,7 @@ def generate_gemini_content(prompt):
       "contents": [{"parts": [{"text": prompt}]}],
       "generationConfig": {"temperature": 0.85},
   }
-  response = requests.post(url, headers=headers, json=payload, timeout=60)
+  response = requests.post(url, headers=headers, json=payload, timeout=240)
   response.raise_for_status()
   data = response.json()
   return data["candidates"][0]["content"]["parts"][0]["text"]
