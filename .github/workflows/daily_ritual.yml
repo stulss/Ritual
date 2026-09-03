@@ -40,13 +40,17 @@ jobs:
         run: |
           # 수동 실행 시 입력값 사용
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "수동 실행 (workflow_dispatch): ${{ github.event.inputs.mode }} 모드로 실행합니다."
             python send_ritual.py --mode ${{ github.event.inputs.mode }}
           else
-            # 정기 스케줄 실행 시 UTC 시간에 따라 분기
+            # 정기 스케줄 실행 시 UTC 시간에 따라 분기 (00:00 UTC = 오전 9시 KST, 07:30 UTC = 오후 4시 30분 KST)
             CURRENT_HOUR=$(date -u +%H)
+            echo "스케줄 자동 실행: 현재 UTC 시간은 ${CURRENT_HOUR}시입니다."
             if [ "$CURRENT_HOUR" -lt 5 ]; then
+              echo "아침 리추얼 모드(morning)로 실행합니다."
               python send_ritual.py --mode morning
             else
+              echo "오후 리추얼 모드(afternoon)로 실행합니다."
               python send_ritual.py --mode afternoon
             fi
           fi

@@ -67,98 +67,227 @@ AFTERNOON_PROMPT = """
 """
 
 
+# AI 전면 장애 시 누락 방지를 위한 고품질 비상 백업 템플릿
+FALLBACK_MORNING = """### 1. 편안했던 장면 하나 떠올리기
+- **옵션 A (장소/물건)**: 주말 아침 햇살이 잘 드는 창가 카페에서 따뜻한 라떼 한 잔 마시며 책장을 넘기던 순간.
+  - *오늘 가져오고 싶은 조건*: 서두르지 않고 차분하게 호흡하며 코드 한 줄 한 줄을 음미하는 여유.
+- **옵션 B (생각/마음가짐)**: "오늘 모든 문제를 다 풀지 못해도 괜찮아, 어제보다 한 걸음만 더 나아가면 충분해"라는 생각.
+  - *오늘 가져오고 싶은 조건*: 결과에 대한 조급함 대신 배움의 과정 자체를 즐기는 태도.
+- **옵션 C (상상)**: 오늘의 모든 과제를 깔끔하게 해결하고 홀가분한 마음으로 산뜻한 저녁 공기를 마시며 귀가하는 내 모습.
+  - *오늘 가져오고 싶은 조건*: 끝까지 해낼 수 있다는 기분 좋은 확신과 설렘.
+
+### 2. 내 인생의 기억에서 강점(장점)과 가치 찾기
+- **선택지 1: [집요함 / 문제 해결]**
+  - 최근 일화: 복잡한 비동기 에러로 온종일 막혔을 때 포기하지 않고 로그를 한 줄씩 추적해 원인을 찾아냄.
+  - 행동의 의미: 어려움 앞에서 물러서지 않고 끝까지 원인을 규명해내는 끈기 증명.
+  - 육성할 강점: 논리적인 디버깅 순서를 수립하고 차분하게 검증하는 문제해결력.
+- **선택지 2: [소통 / 경청]**
+  - 최근 일화: 아키텍처 설계 방향이 갈릴 때 내 주장을 앞세우기보다 동료의 우려를 끝까지 듣고 절충안을 제안함.
+  - 행동의 의미: 팀 전체의 합의와 심리적 안정감을 이끌어내는 협업 태도.
+  - 육성할 강점: 다른 사람의 관점을 빠르게 이해하고 시너지를 내는 소통 역량.
+- **선택지 3: [기록 / 공유]**
+  - 최근 일화: 환경 설정 중 겪은 까다로운 오류 해결법을 팀 노션에 스크린샷과 함께 상세히 정리해 공유함.
+  - 행동의 의미: 동료들이 겪을 수 있는 수 시간의 시행착오를 미리 방지해줌.
+  - 육성할 강점: 지식을 체계적으로 구조화하고 팀의 자산으로 만드는 공유 습관.
+- **선택지 4: [도전 / 실행력]**
+  - 최근 일화: 다뤄보지 않은 새로운 라이브러리 도입 논의 때 먼저 공식 문서를 보고 프로토타입을 만들어봄.
+  - 행동의 의미: 막연한 두려움을 실행으로 돌파하여 프로젝트의 진척을 만듦.
+  - 육성할 강점: 낯선 기술 스택을 빠르게 학습하고 적용하는 애자일한 실행력.
+
+### 3. 남에 대한 평가는 나에 대한 평가 (아침 동료 칭찬 문구 20개)
+1. 아침 일찍부터 밝은 미소로 인사해 주셔서 하루 시작이 활기차졌어요.
+2. 어제 밤늦게까지 고민하셨을 텐데 아침부터 열정적으로 임하시는 모습이 멋져요.
+3. 오늘 아침 스크럼에서 핵심을 똑 부러지게 짚어주셔서 방향 잡는 데 큰 도움이 됐어요.
+4. 자리 정돈도 깔끔하게 하시고 차분하게 준비하시는 모습을 보며 저도 마음을 다잡게 돼요.
+5. 출근길에 가볍게 건네주신 안부 덕분에 아침 긴장이 스르륵 풀렸습니다.
+6. 아침부터 좋은 기술 아티클 링크를 슬랙에 공유해 주셔서 출근길에 유익하게 읽었어요.
+7. 오늘 컨디션이 좋아 보이셔서 덩달아 팀 분위기 전체가 밝아지는 것 같아요.
+8. 지난주 과제 피드백을 꼼꼼하게 정리해 오신 걸 보고 배울 점이 정말 많다고 느꼈어요.
+9. 어려운 과제 앞에서도 "오늘도 재미있게 해봐요!"라고 북돋아 주셔서 든든합니다.
+10. 아침 커피 한잔 챙겨주시며 따뜻한 한마디 건네주셔서 정말 감동이었어요.
+11. 질문 하나에도 늘 성의껏 귀 기울여 주셔서 아침부터 질문하기 편안해요.
+12. 복잡한 문제를 단순하게 설명해 주시는 명확한 화법을 매일 감탄하며 배우고 있어요.
+13. 언제나 정해진 시간보다 먼저 도착해 여유 있게 하루를 준비하시는 성실함이 존경스럽습니다.
+14. 새로운 세션 시작 전 질문 목록을 미리 적어두시는 꼼꼼한 학습 태도가 인상 깊어요.
+15. 동료들의 진도를 조용히 살피고 챙겨주시는 다정한 배려에 늘 감사드립니다.
+16. 항상 긍정적인 언어로 피드백을 전달해 주셔서 듣는 사람에게 큰 힘이 돼요.
+17. 아침부터 깃허브 커밋으로 하루를 힘차게 여는 모습에 좋은 자극을 받았습니다.
+18. 혼자 끙끙 앓지 않고 팀원들과 오픈해서 같이 논의해 주셔서 협업하기가 참 좋아요.
+19. 사소한 질문에도 진지하게 같이 고민해 주셔서 아침부터 큰 위안을 얻었습니다.
+20. 오늘도 동료님과 함께 같은 공간에서 페어 코딩할 수 있어서 든든하고 기대됩니다!
+
+### 4. 내가 주인이 되는 긍정의 목표 (선택지 4개)
+- **선택지 1: [질문과 협업]**
+  - 오늘 쓸 나의 강점: 막히는 부분을 솔직하게 털어놓고 함께 답을 찾아가는 열린 태도
+  - 실천할 작은 행동: 혼자서 30분 이상 막히는 문제는 바로 동료나 멘토에게 질문하기
+- **선택지 2: [몰입과 집중]**
+  - 오늘 쓸 나의 강점: 주변 소음에 흔들리지 않고 핵심 로직 구현에 깊게 파고드는 집중력
+  - 실천할 작은 행동: 뽀모도로 타이머를 켜고 50분 동안은 메신저 알림 끄고 코드에만 몰입하기
+- **선택지 3: [침착한 디버깅]**
+  - 오늘 쓸 나의 강점: 에러 메시지를 두려워하지 않고 실마리로 삼는 침착한 관찰력
+  - 실천할 작은 행동: 콘솔에 빨간 에러가 뜨면 당황하지 않고 첫 번째 줄 메시지부터 소리 내어 읽어보기
+- **선택지 4: [기록과 정리]**
+  - 오늘 쓸 나의 강점: 오늘 배운 새로운 개념을 내 언어로 소화해 남기는 정리 능력
+  - 실천할 작은 행동: 오늘 만난 새로운 문법이나 해결한 에러 1개를 개인 TIL에 3줄 요약하기
+"""
+
+FALLBACK_AFTERNOON = """### 1. 강점 행동 돌아보기
+- **범용 회고 세트**
+  - [했다]: 목표했던 시간 동안 딴짓하지 않고 핵심 로직 구현에 끝까지 몰입했습니다. / "오늘 정말 몰입감 있게 멋지게 해냈어, 수고했어!"
+  - [일부 했다]: 완벽히 끝내진 못했지만 막히는 원인을 좁히고 방향성을 명확히 잡았습니다. / "방향을 잡은 것만으로도 큰 진전이야, 내일 풀면 돼!"
+  - [못 했다]: 예상치 못한 에러에 당황해서 계획했던 진도를 나가지 못했습니다. / "오늘의 삽질은 내일의 튼튼한 밑거름이 될 테니 낙담하지 말자."
+- **4대 테마별 [했다] 예시**
+  - [질문/소통]: 모르는 부분을 감추지 않고 동료에게 정확히 질문해 막힌 흐름을 빠르게 풀었습니다.
+  - [몰입/집중]: 핵심 기능 구현할 때 1시간 동안 완벽하게 집중해서 초안 코드를 완성했습니다.
+  - [침착한 디버깅]: 콘솔 로그를 단계별로 찍어가며 오류 발생 위치를 침착하게 추적했습니다.
+  - [기록/정리]: 디버깅하면서 알게 된 핵심 원인을 잊지 않도록 커밋 메시지와 메모에 꼼꼼히 기록했습니다.
+
+### 2. 오늘 감사했던 일을 동료들과 나눕니다 (대화체 20개)
+1. 오늘 오후 실습 때 제 모호한 질문을 찰떡같이 이해하고 명쾌하게 짚어주셔서 감사했어요.
+2. 디버깅하다가 막혀서 멘붕 왔을 때 차분하게 옆에서 같이 봐주셔서 정말 든든했습니다.
+3. 점심 식사 시간에 맛있는 메뉴 추천해 주시고 재미있게 이야기 나눠주셔서 기분 전환이 확 됐어요.
+4. 오후에 당 떨어질 타이밍에 건네주신 달콤한 간식 덕분에 다시 힘내서 코딩할 수 있었습니다.
+5. 깃 충돌 나서 당황했을 때 같이 터미널 열고 해결해 주셔서 정말 큰 도움이 됐어요.
+6. 공식 문서의 난해한 영문 설명을 알기 쉬운 우리말과 비유로 풀어서 설명해 주셔서 감동했습니다.
+7. 제 코드 리뷰 때 따뜻한 칭찬과 함께 개선 포인트를 친절하게 짚어주셔서 많이 배웠어요.
+8. 오늘 발표나 시연 때 앞에서 고개 끄덕이며 적극적으로 리액션해 주셔서 긴장이 많이 풀렸어요.
+9. 지칠 법한 시간대였는데 팀 분위기 띄워주려고 밝은 농담 건네주셔서 다 같이 웃을 수 있었어요.
+10. 복잡한 API 연동 로직을 그림판으로 도식화해서 보여주신 덕분에 머릿속이 단번에 정리됐어요.
+11. 오늘 페어 프로그래밍 하면서 제 의견을 늘 존중하고 먼저 물어봐 주셔서 즐겁게 작업했습니다.
+12. 테스트 케이스 작성할 때 놓치기 쉬운 엣지 케이스들을 꼼꼼하게 짚어주셔서 코드 완성도가 올라갔어요.
+13. 에러 때문에 한숨 푹푹 쉬고 있었는데 "누구나 겪는 과정이에요"라고 다정하게 위로해 주셔서 위안이 됐어요.
+14. 자리에서 일어나 스트레칭하자고 먼저 챙겨주신 덕분에 뻐근했던 어깨가 한결 가벼워졌습니다.
+15. 오늘 새롭게 알게 된 유용한 단축키와 확장 프로그램을 아낌없이 공유해 주셔서 생산성이 올라갔어요.
+16. 어려운 개념이었는데 포기하지 않고 함께 머리 맞대고 토론해 주셔서 끝까지 이해할 수 있었습니다.
+17. 제 사소한 고민도 건성으로 넘기지 않고 진심 어린 눈빛으로 경청해 주셔서 큰 힘을 얻었어요.
+18. 마감 직전까지 묵묵히 본인 파트를 깔끔하게 마무리해 주셔서 팀 전체 일정에 큰 힘이 되었습니다.
+19. "오늘도 고생 많으셨어요"라는 퇴근길 한마디가 오늘 하루의 피로를 싹 씻어주는 것 같았어요.
+20. 매 순간 성실하고 긍정적인 태도로 임해주셔서 저 역시 오늘 하루 좋은 동기부여를 받았습니다!
+
+### 3. 오늘의 감사일기 카드 (8가지 예시)
+1. [협업/도움]: 오후 내내 씨름하던 비동기 버그를 동료와 페어 코딩으로 30분 만에 잡았을 때의 짜릿한 안도감.
+2. [점심/식사]: 교육장 근처 숨은 맛집에서 동료들과 소소한 일상 이야기를 나누며 웃었던 유쾌한 점심시간.
+3. [간식/배려]: 지친 오후 서랍 속 초콜릿을 슬며시 건네주며 화이팅을 외쳐주던 동료의 따뜻한 손길.
+4. [수다/리프레시]: 옥상 테라스에서 시원한 바람을 맞으며 나눈 10분간의 소소한 잡담이 준 힐링.
+5. [스트레칭/건강]: 장시간 코딩으로 굳은 몸을 다 함께 쭉 펴며 웃음을 터뜨렸던 활기찬 스트레칭 시간.
+6. [격려/공감]: "나도 처음엔 그 개념 진짜 어려웠어"라며 자신의 과거 경험을 솔직히 나눠준 선배 동료의 위로.
+7. [작은 성취]: 매번 헷갈리던 문법을 오늘은 레퍼런스 없이 내 손으로 직접 구현해냈을 때 느낀 뿌듯함.
+8. [하루의 완주]: 수많은 에러와 배움의 파도 속에서도 지치지 않고 오늘 하루를 끝까지 완주해낸 나 자신에 대한 대견함.
+"""
+
+
 def generate_gemini_content(prompt):
-  # 1순위: 3.8 플래시, 2순위: 3.7 플래시
-  models_to_try = ["gemini-3.8-flash", "gemini-3.7-flash"]
-  headers = {"Content-Type": "application/json"}
-  payload = {
-      "contents": [{"parts": [{"text": prompt}]}],
-      "generationConfig": {
-          "temperature": 0.85,
-          "thinkingConfig": {
-              "thinkingLevel": "low"  # 3.8 모델의 생각 단계를 'low'로 낮춰 빠르게 생성
-          },
-      },
-  }
+    # 최신 및 안정적인 Gemini 3 시리즈 모델 풀 (우선순위 순서)
+    models_to_try = [
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.5-flash",
+        "gemini-3.1-flash",
+    ]
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": 0.85,
+            "thinkingConfig": {
+                "thinkingLevel": "low"  # 지연 및 토큰 소모 최소화
+            },
+        },
+    }
 
-  for model in models_to_try:
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+    for model in models_to_try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+        print(f"[{model}] 템플릿 생성 시도 중...", flush=True)
 
-    # 일시적 오류 시 최대 3회 재시도
-    for attempt in range(1, 4):
-      try:
-        print(
-            f"[{model}] 템플릿 생성 요청 중 (시도 {attempt}/3)...",
-            flush=True,
-        )
-        # 여유 있게 180초 대기
-        response = requests.post(
-            url, headers=headers, json=payload, timeout=180
-        )
+        # 각 모델별 최대 2회 시도 (503 과부하 시 장기 지연 방지 후 신속히 다음 모델로 페일오버)
+        for attempt in range(1, 3):
+            try:
+                response = requests.post(url, headers=headers, json=payload, timeout=45)
 
-        if response.status_code == 200:
-          data = response.json()
-          print(f"[{model}] 생성 성공!", flush=True)
-          return data["candidates"][0]["content"]["parts"][0]["text"]
+                if response.status_code == 200:
+                    data = response.json()
+                    candidates = data.get("candidates", [])
+                    if candidates and "content" in candidates[0]:
+                        parts = candidates[0]["content"].get("parts", [])
+                        if parts and "text" in parts[0]:
+                            print(f"[{model}] 생성 성공!", flush=True)
+                            return parts[0]["text"]
+                    print(f"[{model}] 응답 포맷 이상, 다음 모델로 이동합니다.", flush=True)
+                    break
 
-        if response.status_code in (503, 429):
-          print(
-              f"[{model}] 서버 일시 과부하 (코드: {response.status_code})."
-              f" {attempt * 5}초 후 재시도합니다...",
-              flush=True,
-          )
-          time.sleep(attempt * 5)
-        else:
-          response.raise_for_status()
+                if response.status_code in (503, 429):
+                    print(f"[{model}] 서버 과부하/속도제한 (코드: {response.status_code}). (시도 {attempt}/2)", flush=True)
+                    if attempt < 2:
+                        time.sleep(3)
+                        continue
+                    else:
+                        print(f"[{model}] 다음 모델로 페일오버합니다.", flush=True)
+                        break
+                elif response.status_code == 404:
+                    print(f"[{model}] 모델을 찾을 수 없음 (404). 다음 모델로 넘어갑니다.", flush=True)
+                    break
+                else:
+                    print(f"[{model}] HTTP 오류 ({response.status_code}): {response.text[:200]}", flush=True)
+                    break
 
-      except requests.exceptions.RequestException as e:
-        print(f"[{model}] 시도 {attempt} 실패: {e}", flush=True)
-        time.sleep(5)
+            except requests.exceptions.Timeout:
+                print(f"[{model}] 요청 타임아웃 (45초 초과). 다음 모델로 이동합니다.", flush=True)
+                break
+            except requests.exceptions.RequestException as e:
+                print(f"[{model}] 네트워크 오류: {e}", flush=True)
+                break
 
-  raise RuntimeError(
-      "구글 서버 과부하로 인해 모든 모델 및 재시도 요청이 실패했습니다."
-  )
+    print("⚠️ 모든 Gemini 모델 요청이 실패했습니다. 내장 비상 템플릿으로 안전하게 전환합니다.", flush=True)
+    return None
 
 
 def send_to_discord(title, text):
-  chunks = []
-  current_chunk = f"## 📢 {title}\n\n"
+    chunks = []
+    current_chunk = f"## 📢 {title}\n\n"
 
-  for line in text.split("\n"):
-    if len(current_chunk) + len(line) + 2 > 1850:
-      chunks.append(current_chunk)
-      current_chunk = line + "\n"
-    else:
-      current_chunk += line + "\n"
-  if current_chunk.strip():
-    chunks.append(current_chunk)
+    for line in text.split("\n"):
+        if len(current_chunk) + len(line) + 2 > 1850:
+            chunks.append(current_chunk)
+            current_chunk = line + "\n"
+        else:
+            current_chunk += line + "\n"
+    if current_chunk.strip():
+        chunks.append(current_chunk)
 
-  for chunk in chunks:
-    res = requests.post(DISCORD_WEBHOOK_URL, json={"content": chunk.strip()})
-    if res.status_code not in (200, 204):
-      print(f"디스코드 전송 오류 ({res.status_code}): {res.text}")
-    time.sleep(1)
+    for chunk in chunks:
+        res = requests.post(DISCORD_WEBHOOK_URL, json={"content": chunk.strip()}, timeout=20)
+        if res.status_code not in (200, 204):
+            print(f"디스코드 전송 오류 ({res.status_code}): {res.text}")
+        time.sleep(1)
 
 
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser()
-  parser.add_argument(
-      "--mode",
-      choices=["morning", "afternoon"],
-      default="morning",
-      help="실행 모드 (morning / afternoon)",
-  )
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--mode",
+        choices=["morning", "afternoon"],
+        default="morning",
+        help="실행 모드 (morning / afternoon)",
+    )
+    args = parser.parse_args()
 
-  if args.mode == "morning":
-    title = "🌅 [오전 9:00] 오늘의 아침 준비 리추얼 템플릿"
-    prompt = MORNING_PROMPT
-  else:
-    title = "🌇 [오후 4:30] 오늘의 마무리 리추얼 템플릿"
-    prompt = AFTERNOON_PROMPT
+    if args.mode == "morning":
+        title = "🌅 [오전 9:00] 오늘의 아침 준비 리추얼 템플릿"
+        prompt = MORNING_PROMPT
+        fallback_text = FALLBACK_MORNING
+    else:
+        title = "🌇 [오후 4:30] 오늘의 마무리 리추얼 템플릿"
+        prompt = AFTERNOON_PROMPT
+        fallback_text = FALLBACK_AFTERNOON
 
-  print(f"{args.mode} 모드로 템플릿 생성을 시작합니다...")
-  result_text = generate_gemini_content(prompt)
-  print("디스코드로 전송합니다...")
-  send_to_discord(title, result_text)
-  print("전송 완료!")
+    print(f"{args.mode} 모드로 템플릿 생성을 시작합니다...")
+    result_text = generate_gemini_content(prompt)
+
+    if not result_text:
+        print("💡 비상 기본 리추얼 템플릿을 전송합니다.")
+        result_text = fallback_text
+
+    print("디스코드로 전송합니다...")
+    send_to_discord(title, result_text)
+    print("전송 완료!")
+
