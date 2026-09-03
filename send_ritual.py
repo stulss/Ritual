@@ -68,17 +68,46 @@ AFTERNOON_PROMPT = """
 
 
 def generate_gemini_content(prompt):
-  # gemini-3.8-flash 로 지정
-  url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={GEMINI_API_KEY}"
+  # 1순위: 3.8 플래시, 2순위: 서버 과부하 시 대체할 예비 모델
+  models_to_try = ["gemini-3.8-flash", "gemini-2.5-flash"]
   headers = {"Content-Type": "application/json"}
   payload = {
       "contents": [{"parts": [{"text": prompt}]}],
       "generationConfig": {"temperature": 0.85},
   }
-  response = requests.post(url, headers=headers, json=payload, timeout=240)
-  response.raise_for_status()
-  data = response.json()
-  return data["candidates"][0]["content"]["parts"][0]["text"]
+
+  for model in models_to_try:
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+
+    # 일시적 과부하(503) 발생 시 최대 3회 재시도
+    for attempt in range(1, 4):
+      try:
+        print(f"[{model}] 생성 요청 중 (시도 {attempt}/3)...")
+        response = requests.post(
+            url, headers=headers, json=payload, timeout=300
+        )
+
+        if response.status_code == 200:
+          data = response.json()
+          return data["candidates"][0]["content"]["parts"][0]["text"]
+
+        # 503(서버 과부하) 또는 429(요청 제한)일 경우 잠시 대기 후 재시도
+        if response.status_code in (503, 429):
+          print(
+              f"[{model}] 서버 일시 과부하 (코드: {response.status_code})."
+              f" {attempt * 5}초 후 재시도합니다..."
+          )
+          time.sleep(attempt * 5)
+        else:
+          response.raise_for_status()
+
+      except requests.exceptions.RequestException as e:
+        print(f"[{model}] 시도 {attempt} 실패: {e}")
+        time.sleep(5)
+
+  raise RuntimeError(
+      "구글 서버 과부하로 인해 모든 모델 및 재시도 요청이 실패했습니다."
+  )
 
 
 def send_to_discord(title, text):
