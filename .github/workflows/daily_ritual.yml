@@ -1,0 +1,52 @@
+name: Daily Ritual to Discord
+
+on:
+  schedule:
+    # 오전 09:00 KST (00:00 UTC) 월~금
+    - cron: '0 0 * * 1-5'
+    # 오후 16:30 KST (07:30 UTC) 월~금
+    - cron: '30 7 * * 1-5'
+  # GitHub 웹 화면에서 수동으로 즉시 테스트할 수 있도록 활성화
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '테스트 실행 모드 선택'
+        required: true
+        default: 'morning'
+        type: choice
+        options:
+          - morning
+          - afternoon
+
+jobs:
+  run-ritual:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 파이썬 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 필수 패키지 설치
+        run: pip install requests
+
+      - name: 실행 시간 판별 및 스크립트 실행
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          # 수동 실행 시 입력값 사용
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python send_ritual.py --mode ${{ github.event.inputs.mode }}
+          else
+            # 정기 스케줄 실행 시 UTC 시간에 따라 분기
+            CURRENT_HOUR=$(date -u +%H)
+            if [ "$CURRENT_HOUR" -lt 5 ]; then
+              python send_ritual.py --mode morning
+            else
+              python send_ritual.py --mode afternoon
+            fi
+          fi
