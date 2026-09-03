@@ -73,7 +73,12 @@ def generate_gemini_content(prompt):
   headers = {"Content-Type": "application/json"}
   payload = {
       "contents": [{"parts": [{"text": prompt}]}],
-      "generationConfig": {"temperature": 0.85},
+      "generationConfig": {
+          "temperature": 0.85,
+          "thinkingConfig": {
+              "thinkingBudget": 0  # 10~15초 만에 신속하게 생성
+          },
+      },
   }
 
   for model in models_to_try:
@@ -82,27 +87,30 @@ def generate_gemini_content(prompt):
     # 일시적 과부하(503) 발생 시 최대 3회 재시도
     for attempt in range(1, 4):
       try:
-        print(f"[{model}] 생성 요청 중 (시도 {attempt}/3)...")
-        response = requests.post(
-            url, headers=headers, json=payload, timeout=300
+        print(
+            f"[{model}] 템플릿 생성 요청 중 (시도 {attempt}/3)...",
+            flush=True,
         )
+        response = requests.post(url, headers=headers, json=payload, timeout=90)
 
         if response.status_code == 200:
           data = response.json()
+          print(f"[{model}] 생성 성공!", flush=True)
           return data["candidates"][0]["content"]["parts"][0]["text"]
 
         # 503(서버 과부하) 또는 429(요청 제한)일 경우 잠시 대기 후 재시도
         if response.status_code in (503, 429):
           print(
               f"[{model}] 서버 일시 과부하 (코드: {response.status_code})."
-              f" {attempt * 5}초 후 재시도합니다..."
+              f" {attempt * 5}초 후 재시도합니다...",
+              flush=True,
           )
           time.sleep(attempt * 5)
         else:
           response.raise_for_status()
 
       except requests.exceptions.RequestException as e:
-        print(f"[{model}] 시도 {attempt} 실패: {e}")
+        print(f"[{model}] 시도 {attempt} 실패: {e}", flush=True)
         time.sleep(5)
 
   raise RuntimeError(
