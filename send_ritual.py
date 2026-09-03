@@ -68,7 +68,8 @@ AFTERNOON_PROMPT = """
 
 
 def generate_gemini_content(prompt):
-  url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+  # gemini-3.8-flash 로 지정
+  url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={GEMINI_API_KEY}"
   headers = {"Content-Type": "application/json"}
   payload = {
       "contents": [{"parts": [{"text": prompt}]}],
