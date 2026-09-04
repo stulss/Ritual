@@ -2,8 +2,8 @@ name: Daily Ritual to Discord
 
 on:
   schedule:
-    # 오전 09:00 KST (00:00 UTC) 월~금
-    - cron: '0 0 * * 1-5'
+    # 오전 08:50 KST (23:50 UTC) 월~금 (10분 일찍 예약하여 9시 전 도착 보장)
+    - cron: '50 23 * * 0-4'
     # 오후 16:30 KST (07:30 UTC) 월~금
     - cron: '30 7 * * 1-5'
   # GitHub 웹 화면에서 수동으로 즉시 테스트할 수 있도록 활성화
@@ -43,10 +43,12 @@ jobs:
             echo "수동 실행 (workflow_dispatch): ${{ github.event.inputs.mode }} 모드로 실행합니다."
             python send_ritual.py --mode ${{ github.event.inputs.mode }}
           else
-            # 정기 스케줄 실행 시 UTC 시간에 따라 분기 (00:00 UTC = 오전 9시 KST, 07:30 UTC = 오후 4시 30분 KST)
+            # 정기 스케줄 실행 시 UTC 시간에 따라 분기
+            # - 아침: 23:50 UTC (KST 08:50) -> UTC 20시~23시 또는 0시~4시
+            # - 오후: 07:30 UTC (KST 16:30) -> 그 외 (UTC 5시~19시)
             CURRENT_HOUR=$(date -u +%H)
             echo "스케줄 자동 실행: 현재 UTC 시간은 ${CURRENT_HOUR}시입니다."
-            if [ "$CURRENT_HOUR" -lt 5 ]; then
+            if [ "$CURRENT_HOUR" -ge 20 ] || [ "$CURRENT_HOUR" -lt 5 ]; then
               echo "아침 리추얼 모드(morning)로 실행합니다."
               python send_ritual.py --mode morning
             else
